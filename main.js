@@ -39,17 +39,17 @@ gltfLoader.setDRACOLoader(dracoLoader);
 const rgbeLoader = new RGBELoader(loadingManager); // Add RGBELoader instance
 // List of UI card image URLs to preload
 const uiImageUrls = [
-    'https://play.rosebud.ai/assets/Tree UI Card.jpg?9ixH',
-    'https://play.rosebud.ai/assets/TeleportPad UI Card.jpg?Ax7P',
-    'https://play.rosebud.ai/assets/Slide UI card.jpg?rO7H',
-    'https://play.rosebud.ai/assets/Jungle Gym UI Card.jpg?cClv',
-    'https://play.rosebud.ai/assets/Info-Panel UI Card.jpg?wGOY',
-    'https://play.rosebud.ai/assets/Door UI Card.jpg?FaC4',
-    'https://play.rosebud.ai/assets/Bench UI Card.jpg?qmLZ',
-    'https://play.rosebud.ai/assets/School Hall UI-1.jpg?ZjdR',
-    'https://play.rosebud.ai/assets/School Hall UI-2.jpg?eroy',
-    'https://play.rosebud.ai/assets/Controls screen UI.jpg?iyJJ',
-    'https://play.rosebud.ai/assets/Start screen.jpg?nD5c' // Also preload the start screen image
+    'Public/UI elements/Tree UI Card.jpg',
+    'Public/UI elements/TeleportPad UI Card.jpg',
+    'Public/UI elements/Slide UI card.jpg',
+    'Public/UI elements/Jungle Gym UI Card.jpg',
+    'Public/UI elements/Info-Panel UI Card.jpg',
+    'Public/UI elements/Door UI Card.jpg',
+    'Public/UI elements/Bench UI Card.jpg',
+    'Public/UI elements/School Hall UI-1.jpg',
+    'Public/UI elements/School Hall UI-2.jpg',
+    'Public/UI elements/Controls screen UI.jpg',
+    'https://play.rosebud.ai/assets/Start screen.jpg?nD5c' // No local asset found
 ];
 let assetsLoaded = false;
 let uiImagesLoaded = 0;
@@ -247,7 +247,7 @@ controlsPopup.style.maxHeight = 'min(1536px, 90vh)'; // Don't exceed 1536px or 9
 // background-size: contain will handle aspect ratio of the image itself.
 controlsPopup.style.padding = '15px'; // Padding for the frame
 controlsPopup.style.boxSizing = 'border-box'; // Width/Height includes padding and border
-controlsPopup.style.backgroundImage = `url('https://play.rosebud.ai/assets/Controls screen UI.jpg?iyJJ')`;
+controlsPopup.style.backgroundImage = `url('Public/UI elements/Controls screen UI.jpg')`;
 controlsPopup.style.backgroundSize = 'contain'; // Scale image to fit within padding box
 controlsPopup.style.backgroundRepeat = 'no-repeat';
 controlsPopup.style.backgroundPosition = 'center';
@@ -457,7 +457,7 @@ audioListener = new THREE.AudioListener();
 camera.add(audioListener); // Add listener to the camera
 sound = new THREE.Audio(audioListener);
 // Placeholder for music URL - replace with actual URL
-const musicURL = 'https://play.rosebud.ai/assets/BackgroundMusic 1.mp3?7pOp'; // You will provide this
+const musicURL = 'Public/Textures/BackgroundMusic 1.mp3';
 audioLoader.load(musicURL, function(buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
@@ -524,7 +524,7 @@ const skyColor = new THREE.Color(0x87ceeb); // Bright sky blue
 const groundColor = new THREE.Color(0xffffff); // White ground reflection
 
 
-const hdriUrl = "https://play.rosebud.ai/assets/skybox1.hdr?9L8X";
+const hdriUrl = "Public/Textures/table_mountain_1_puresky_2k.hdr";
 rgbeLoader.load(hdriUrl, (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.background = texture;
@@ -552,7 +552,7 @@ function createTerrain() {
     const size = 500; // Increased map size
     // Create simple flat plane for visuals
     const geometry = new THREE.PlaneGeometry(size, size);
-    const texture = textureLoader.load('https://play.rosebud.ai/assets/grass4.png?c8dJ');
+    const texture = textureLoader.load('Public/Textures/Grass-texture.jpg');
     const normalMap = textureLoader.load('https://play.rosebud.ai/assets/3D_playground_grass_normal.png?wCr9');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(50, 50); // Increased texture repeat to maintain proper scaling
@@ -751,7 +751,7 @@ window.addEventListener('keyup', (event) => {
     }
 });
 // Load the character model
-const characterUrl = 'https://play.rosebud.ai/assets/idle-v1.glb?P2wb'; // Using idle-v1.glb
+const characterUrl = 'idle.glb';
 gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by gltfLoader if set for DRACO compressed models
     const model = gltf.scene;
     model.scale.set(
@@ -899,7 +899,7 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
         console.warn("No animations found in idle-v1.glb.");
     }
     // Load Skip Animation from skip2.glb
-    const skipUrl = 'https://play.rosebud.ai/assets/skip2.glb?Nbqn';
+    const skipUrl = 'skip.glb';
     gltfLoader.load(skipUrl, (skipGltf) => { // DRACOLoader is implicitly used
         if (skipGltf.animations && skipGltf.animations.length > 0 && mixer) {
             const clip = skipGltf.animations.find(c => c.name.toLowerCase().includes('skip')) || skipGltf.animations[0];
@@ -919,7 +919,7 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
         console.error('Error loading skip2.glb animation:', error);
     });
     // Load Dance Animation from dance2.glb
-    const danceUrl = 'https://play.rosebud.ai/assets/dance2.glb?xqGw';
+    const danceUrl = 'dance.glb';
     gltfLoader.load(danceUrl, (danceGltf) => { // DRACOLoader is implicitly used
         if (danceGltf.animations && danceGltf.animations.length > 0 && mixer) {
             const clip = danceGltf.animations.find(c => c.name.toLowerCase().includes('dance')) || danceGltf.animations[0];
@@ -1221,7 +1221,7 @@ function updateCharacterMovement(deltaTime) {
         } else if (showTreePrompt && treeObject) {
             let popupMessage = `Interacting with: ${treeObject.name}`; // Default for Tree
             if (treeObject && treeObject.name && treeObject.name.includes('Tree')) {
-                popupMessage = `<img src='https://play.rosebud.ai/assets/Tree UI Card.jpg?9ixH' alt='Tree Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='Public/UI elements/Tree UI Card.jpg' alt='Tree Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 400px)';
                 interactionPopup.style.height = 'auto';
@@ -1233,32 +1233,32 @@ function updateCharacterMovement(deltaTime) {
         } else if (showOtherPromptFor) {
             let popupMessage = `Interacting with: ${showOtherPromptFor.name}`; // Default message
             if (showOtherPromptFor.name.includes('Teleport Pad')) {
-                popupMessage = `<img src='https://play.rosebud.ai/assets/TeleportPad UI Card.jpg?Ax7P' alt='Teleport Pad Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='Public/UI elements/TeleportPad UI Card.jpg' alt='Teleport Pad Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px'; // Reset padding for image
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)'; // Responsive width for the image popup
                 interactionPopup.style.height = 'auto'; // Height adjusts to image
             } else if (showOtherPromptFor.name.includes('Slide')) {
-                popupMessage = `<img src='https://play.rosebud.ai/assets/Slide UI card.jpg?rO7H' alt='Slide Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='Public/UI elements/Slide UI card.jpg' alt='Slide Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px'; // Reset padding for image
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)'; // Responsive width
                 interactionPopup.style.height = 'auto'; // Height adjusts
             } else if (showOtherPromptFor.name.includes('Jungle Gym')) {
-                popupMessage = `<img src='https://play.rosebud.ai/assets/Jungle Gym UI Card.jpg?cClv' alt='Jungle Gym Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='Public/UI elements/Jungle Gym UI Card.jpg' alt='Jungle Gym Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)';
                 interactionPopup.style.height = 'auto';
             } else if (showOtherPromptFor.name.includes('Door')) {
-                popupMessage = `<img src='https://play.rosebud.ai/assets/Door UI Card.jpg?FaC4' alt='Door Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='Public/UI elements/Door UI Card.jpg' alt='Door Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)';
                 interactionPopup.style.height = 'auto';
             } else if (showOtherPromptFor.name.includes('Info-Panel')) {
-                popupMessage = `<img src='https://play.rosebud.ai/assets/Info-Panel UI Card.jpg?wGOY' alt='Info Panel Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='Public/UI elements/Info-Panel UI Card.jpg' alt='Info Panel Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)';
                 interactionPopup.style.height = 'auto';
             } else if (showOtherPromptFor.name.includes('Bench')) {
-                popupMessage = `<img src='https://play.rosebud.ai/assets/Bench UI Card.jpg?qmLZ' alt='Bench Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='Public/UI elements/Bench UI Card.jpg' alt='Bench Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 400px)';
                 interactionPopup.style.height = 'auto';
@@ -1300,10 +1300,10 @@ function updateCharacterMovement(deltaTime) {
 let schoolHallCurrentPage = 0;
 const schoolHallPages = [{
     title: "Page 1",
-    content: "<img src='https://play.rosebud.ai/assets/School Hall UI-1.jpg?ZjdR' alt='School Hall Info Page 1' style='width: 100%; height: auto; display: block; border-radius: 8px;'>"
+    content: "<img src='Public/UI elements/School Hall UI-1.jpg' alt='School Hall Info Page 1' style='width: 100%; height: auto; display: block; border-radius: 8px;'>"
 }, {
     title: "Page 2",
-    content: "<img src='https://play.rosebud.ai/assets/School Hall UI-2.jpg?eroy' alt='School Hall Info Page 2' style='width: 100%; height: auto; display: block; border-radius: 8px;'>"
+    content: "<img src='Public/UI elements/School Hall UI-2.jpg' alt='School Hall Info Page 2' style='width: 100%; height: auto; display: block; border-radius: 8px;'>"
 }];
 
 function updateSchoolHallPopupContent() {
@@ -1619,13 +1619,13 @@ function arrangeScenery() {
 const arrangedScenery = arrangeScenery();
 loadSchoolHall(); // Call the function to load the school hall
 // Asset URLs
-const treeUrl = "https://play.rosebud.ai/assets/Tree.glb?rYhh";
-const teleportPadUrl = "https://play.rosebud.ai/assets/Teleport Pad.glb?xJXC";
-const slideUrl = "https://play.rosebud.ai/assets/Slide.glb?XOP2";
-const junglegymUrl = "https://play.rosebud.ai/assets/Jungle Gym.glb?wlm3";
-const infoPanelUrl = "https://play.rosebud.ai/assets/Info-Panel.glb?MCZk";
-const doorUrl = "https://play.rosebud.ai/assets/Door.glb?FeFX";
-const benchUrl = "https://play.rosebud.ai/assets/Bench.glb?0SGA";
+const treeUrl = "Public/Models/Tree2-v1.glb";
+const teleportPadUrl = "Public/Models/TeleportPad-v1.glb";
+const slideUrl = "Public/Models/Slide-v1.glb";
+const junglegymUrl = "Public/Models/Junglegym-v1.glb";
+const infoPanelUrl = "Public/Models/Info-Panel-v1.glb";
+const doorUrl = "Public/Models/Door-v1.glb";
+const benchUrl = "Public/Models/Bench-v1.glb";
 // Function to load a generic GLB asset and add physics
 function loadAsset(url, position, scale, rotationY = 0, physicsOptions = {
     type: 'box',
@@ -1808,7 +1808,7 @@ function createBoundaryWalls() {
     const mapSize = 500; // Must match terrain size
     const wallHeight = 50; // Make walls tall enough
     const wallThickness = 2;
-    const wallTexture = textureLoader.load('https://play.rosebud.ai/assets/Wall.png?bGkd');
+    const wallTexture = textureLoader.load('Public/Textures/Wall-texture.jpg');
     wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
     wallTexture.repeat.set(mapSize / 50, wallHeight / 50); // Adjust repeat based on wall dimensions
     const wallMaterial = new THREE.MeshStandardMaterial({
