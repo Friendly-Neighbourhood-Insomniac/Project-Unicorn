@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Unicorn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+  <style>
+    html, body, #renderDiv {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+      overflow: hidden;
+    }
+    
+    @media (orientation: portrait) {
+      html, body, #renderDiv {
+        height: -webkit-fill-available;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      html {
+        font-size: 14px;
+      }
+    }
+  </style>
+  <script>
+    // Fix for mobile viewport height
+    function setVH() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+    setVH();
+  </script>
+  <script type="module" crossorigin src="/assets/index-CMPOXI-F.js"></script>
+</head>
+<body>
+  <div id="renderDiv"></div>
+</body>
+</html>
