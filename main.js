@@ -1972,7 +1972,6 @@ function createWallLabels() {
 
 }
 createWallLabels(); // Call the function to create wall labels
-const dynamicObjects = []; // Array to hold objects that need their mesh updated from physics
 function animate() {
     requestAnimationFrame(animate);
 
@@ -2013,14 +2012,6 @@ function animate() {
         // } else if (debugHUD) { // Removed
         //     debugHUD.innerHTML = "Character or characterBody not loaded."; // Removed
         // } // Removed
-        // Update dynamic schoolyard objects
-        dynamicObjects.forEach(obj => {
-            if (obj.mesh && obj.body) {
-                obj.mesh.position.copy(obj.body.position);
-                obj.mesh.quaternion.copy(obj.body.quaternion);
-            }
-        });
-
         // Update animals
         const animals = [...bunnies, ...sheep];
         animals.forEach(animal => {
