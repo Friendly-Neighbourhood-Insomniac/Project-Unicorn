@@ -52,6 +52,7 @@ const uiImageUrls = [
     'https://play.rosebud.ai/assets/Start screen.jpg?nD5c' // Also preload the start screen image
 ];
 let assetsLoaded = false;
+let uiImagesLoaded = 0;
 let typewriterInterval = null; // For managing the typewriter effect
 // Optionally, add URL remapping if needed
 loadingManager.setURLModifier((url) => {
@@ -119,6 +120,15 @@ loadingProgressText.style.fontFamily = "'Baloo 2', cursive, sans-serif";
 loadingProgressText.style.color = '#FFFFFF';
 startScreen.appendChild(loadingProgressText);
 parentDiv.appendChild(startScreen);
+
+function enableStartIfReady() {
+    if (assetsLoaded && uiImagesLoaded === uiImageUrls.length) {
+        if (loadingProgressText) {
+            loadingProgressText.style.display = 'none';
+        }
+        startButton.disabled = false;
+    }
+}
 // Create a container for top center HUD prompts
 const topPromptsContainer = document.createElement('div');
 topPromptsContainer.id = 'topPromptsContainer';
@@ -358,8 +368,8 @@ startButton.addEventListener('click', () => {
 });
 // Loading manager events
 loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
-    const totalAssetsToLoad = itemsTotal + uiImageUrls.length; // Adjust total items count
-    const progress = (((itemsLoaded + (uiImageUrls.length - (uiImageUrls.filter(u => !textureLoader.load(u)).length))) / totalAssetsToLoad) * 100).toFixed(0);
+    const totalAssetsToLoad = itemsTotal + uiImageUrls.length;
+    const progress = (((itemsLoaded + uiImagesLoaded) / totalAssetsToLoad) * 100).toFixed(0);
     if (loadingProgressText) {
         loadingProgressText.innerText = `Loading assets... ${progress}%`;
     }
@@ -367,17 +377,16 @@ loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
 // Preload UI images
 uiImageUrls.forEach(url => {
     textureLoader.load(url, () => {
+        uiImagesLoaded++;
         console.log(`Preloaded UI image: ${url}`);
+        enableStartIfReady();
     }, undefined, (err) => {
         console.error(`Error preloading UI image ${url}:`, err);
     });
 });
 loadingManager.onLoad = function() {
     assetsLoaded = true;
-    if (loadingProgressText) {
-        loadingProgressText.style.display = 'none'; // Hide loading progress text
-    }
-    startButton.disabled = false; // Enable start button
+    enableStartIfReady();
     // HUDs will be shown when startButton is clicked
 };
 
