@@ -879,7 +879,7 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
     mixer = new THREE.AnimationMixer(model);
     const animations = gltf.animations;
     // Animation names HUD removed, debug logging will handle this info if needed elsewhere.
-    // Load Idle Animation from idle-v1.glb
+    // Load Idle Animation from idle.glb
     if (animations && animations.length > 0) {
         // Assuming the desired idle animation is the first one or named appropriately
         const idleClipNames = ['idle', 'stand', 'default', 'base_idle', 'tpose_action', 'Armature|mixamo.com|Layer0']; // Common idle animation names
@@ -890,15 +890,15 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
             idleAction.setLoop(THREE.LoopRepeat);
             idleAction.setEffectiveWeight(1);
             idleAction.play();
-            console.log("Playing Idle animation from idle-v1.glb:", mainIdleClip.name);
+            console.log("Playing Idle animation from idle.glb:", mainIdleClip.name);
             currentAnimationState = AnimationState.IDLE;
         } else {
-            console.warn("No suitable Idle animation found in idle-v1.glb.");
+            console.warn("No suitable Idle animation found in idle.glb.");
         }
     } else {
-        console.warn("No animations found in idle-v1.glb.");
+        console.warn("No animations found in idle.glb.");
     }
-    // Load Skip Animation from skip2.glb
+    // Load Skip Animation from skip.glb
     const skipUrl = 'skip.glb';
     gltfLoader.load(skipUrl, (skipGltf) => { // DRACOLoader is implicitly used
         if (skipGltf.animations && skipGltf.animations.length > 0 && mixer) {
@@ -907,18 +907,18 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
                 skipAction = mixer.clipAction(clip);
                 skipAction.setLoop(THREE.LoopRepeat);
                 skipAction.setEffectiveWeight(0); // Initially not playing
-                console.log("Loaded Skip animation from skip2.glb:", clip.name);
+                console.log("Loaded Skip animation from skip.glb:", clip.name);
                 // Animation names HUD removed
             } else {
-                console.warn("No suitable Skip animation found in skip2.glb.");
+                console.warn("No suitable Skip animation found in skip.glb.");
             }
         } else {
-            console.warn("No animation found in skip2.glb or mixer not initialized.");
+            console.warn("No animation found in skip.glb or mixer not initialized.");
         }
     }, undefined, (error) => {
-        console.error('Error loading skip2.glb animation:', error);
+        console.error('Error loading skip.glb animation:', error);
     });
-    // Load Dance Animation from dance2.glb
+    // Load Dance Animation from dance.glb
     const danceUrl = 'dance.glb';
     gltfLoader.load(danceUrl, (danceGltf) => { // DRACOLoader is implicitly used
         if (danceGltf.animations && danceGltf.animations.length > 0 && mixer) {
@@ -927,16 +927,16 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
                 danceAction = mixer.clipAction(clip);
                 danceAction.setLoop(THREE.LoopRepeat);
                 danceAction.setEffectiveWeight(0); // Initially not playing
-                console.log("Loaded Dance animation from dance2.glb:", clip.name);
+                console.log("Loaded Dance animation from dance.glb:", clip.name);
                 // Animation names HUD removed
             } else {
-                console.warn("No suitable Dance animation found in dance2.glb.");
+                console.warn("No suitable Dance animation found in dance.glb.");
             }
         } else {
-            console.warn("No animation found in dance2.glb or mixer not initialized.");
+            console.warn("No animation found in dance.glb or mixer not initialized.");
         }
     }, undefined, (error) => {
-        console.error('Error loading dance2.glb animation:', error);
+        console.error('Error loading dance.glb animation:', error);
     });
     // Jump and Fall actions are intentionally left null as they are not separate GLBs.
     // If you had jump.glb or fall.glb, you would load them similarly.
@@ -1634,7 +1634,6 @@ function loadAsset(url, position, scale, rotationY = 0, physicsOptions = {
     gltfLoader.load(url, (gltf) => {
         const model = gltf.scene;
         model.scale.set(scale.x, scale.y, scale.z);
-        // model.position.copy(position); // Old position setting
         model.rotation.y = rotationY;
         model.rotation.x = rotationX; // Apply X rotation
         model.traverse((child) => {
