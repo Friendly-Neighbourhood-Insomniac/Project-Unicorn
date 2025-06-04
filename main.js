@@ -49,7 +49,7 @@ const uiImageUrls = [
     'Public/UI elements/School Hall UI-1.jpg',
     'Public/UI elements/School Hall UI-2.jpg',
     'Public/UI elements/Controls screen UI.jpg',
-    'https://play.rosebud.ai/assets/Start screen.jpg?nD5c' // No local asset found
+    'Public/UI elements/Start Screen.jpg'
 ];
 let assetsLoaded = false;
 let uiImagesLoaded = 0;
@@ -87,8 +87,7 @@ startScreen.style.alignItems = 'center';
 startScreen.style.fontFamily = "'Baloo 2', cursive, sans-serif";
 startScreen.style.zIndex = '200';
 const gameTitleImage = document.createElement('img');
-// Replace with your actual image URL
-gameTitleImage.src = 'https://play.rosebud.ai/assets/Start screen.jpg?nD5c';
+gameTitleImage.src = 'Public/UI elements/Start Screen.jpg';
 gameTitleImage.alt = 'Game Title';
 gameTitleImage.style.width = '100vw';
 gameTitleImage.style.height = 'auto';
