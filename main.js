@@ -47,17 +47,17 @@ dracoLoader.preload();
 const rgbeLoader = new RGBELoader(loadingManager); // Add RGBELoader instance
 // List of UI card image URLs to preload
 const uiImageUrls = [
-    'public/UI elements/Tree UI Card.jpg',
-    'public/UI elements/TeleportPad UI Card.jpg',
-    'public/UI elements/Slide UI card.jpg',
-    'public/UI elements/Jungle Gym UI Card.jpg',
-    'public/UI elements/Info-Panel UI Card.jpg',
-    'public/UI elements/Door UI Card.jpg',
-    'public/UI elements/Bench UI Card.jpg',
-    'public/UI elements/School Hall UI-1.jpg',
-    'public/UI elements/School Hall UI-2.jpg',
-    'public/UI elements/Controls screen UI.jpg',
-    'public/UI elements/Start_Screen.jpg'
+    '/UI elements/Tree UI Card.jpg',
+    '/UI elements/TeleportPad UI Card.jpg',
+    '/UI elements/Slide UI card.jpg',
+    '/UI elements/Jungle Gym UI Card.jpg',
+    '/UI elements/Info-Panel UI Card.jpg',
+    '/UI elements/Door UI Card.jpg',
+    '/UI elements/Bench UI Card.jpg',
+    '/UI elements/School Hall UI-1.jpg',
+    '/UI elements/School Hall UI-2.jpg',
+    '/UI elements/Controls screen UI.jpg',
+    '/UI elements/Start_Screen.jpg'
 ];
 let assetsLoaded = false;
 let uiImagesLoaded = 0;
@@ -88,7 +88,7 @@ startScreen.style.alignItems = 'center';
 startScreen.style.fontFamily = "'Baloo 2', cursive, sans-serif";
 startScreen.style.zIndex = '200';
 const gameTitleImage = document.createElement('img');
-gameTitleImage.src = 'public/UI elements/Start_Screen.jpg';
+gameTitleImage.src = '/UI elements/Start_Screen.jpg';
 gameTitleImage.alt = 'Game Title';
 gameTitleImage.style.width = '100vw';
 gameTitleImage.style.height = 'auto';
@@ -247,7 +247,7 @@ controlsPopup.style.maxHeight = 'min(1536px, 90vh)'; // Don't exceed 1536px or 9
 // background-size: contain will handle aspect ratio of the image itself.
 controlsPopup.style.padding = '15px'; // Padding for the frame
 controlsPopup.style.boxSizing = 'border-box'; // Width/Height includes padding and border
-controlsPopup.style.backgroundImage = `url('public/UI elements/Controls screen UI.jpg')`;
+controlsPopup.style.backgroundImage = `url('/UI elements/Controls screen UI.jpg')`;
 controlsPopup.style.backgroundSize = 'contain'; // Scale image to fit within padding box
 controlsPopup.style.backgroundRepeat = 'no-repeat';
 controlsPopup.style.backgroundPosition = 'center';
@@ -457,7 +457,7 @@ audioListener = new THREE.AudioListener();
 camera.add(audioListener); // Add listener to the camera
 sound = new THREE.Audio(audioListener);
 // Placeholder for music URL - replace with actual URL
-const musicURL = 'public/Textures/BackgroundMusic 1.mp3';
+const musicURL = '/Textures/BackgroundMusic 1.mp3';
 audioLoader.load(musicURL, function(buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
@@ -524,7 +524,7 @@ const skyColor = new THREE.Color(0x87ceeb); // Bright sky blue
 const groundColor = new THREE.Color(0xffffff); // White ground reflection
 
 
-const hdriUrl = "public/Textures/table_mountain_1_puresky_2k.hdr";
+const hdriUrl = "/Textures/table_mountain_1_puresky_2k.hdr";
 rgbeLoader.load(hdriUrl, (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.background = texture;
@@ -552,7 +552,7 @@ function createTerrain() {
     const size = 500; // Increased map size
     // Create simple flat plane for visuals
     const geometry = new THREE.PlaneGeometry(size, size);
-    const texture = textureLoader.load('public/Textures/Grass-texture.jpg');
+    const texture = textureLoader.load('/Textures/Grass-texture.jpg');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(50, 50); // Increased texture repeat to maintain proper scaling
     texture.encoding = THREE.sRGBEncoding;
@@ -1216,7 +1216,7 @@ function updateCharacterMovement(deltaTime) {
         } else if (showTreePrompt && treeObject) {
             let popupMessage = `Interacting with: ${treeObject.name}`; // Default for Tree
             if (treeObject && treeObject.name && treeObject.name.includes('Tree')) {
-                popupMessage = `<img src='public/UI elements/Tree UI Card.jpg' alt='Tree Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='/UI elements/Tree UI Card.jpg' alt='Tree Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 400px)';
                 interactionPopup.style.height = 'auto';
@@ -1228,32 +1228,32 @@ function updateCharacterMovement(deltaTime) {
         } else if (showOtherPromptFor) {
             let popupMessage = `Interacting with: ${showOtherPromptFor.name}`; // Default message
             if (showOtherPromptFor.name.includes('Teleport Pad')) {
-                popupMessage = `<img src='public/UI elements/TeleportPad UI Card.jpg' alt='Teleport Pad Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='/UI elements/TeleportPad UI Card.jpg' alt='Teleport Pad Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px'; // Reset padding for image
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)'; // Responsive width for the image popup
                 interactionPopup.style.height = 'auto'; // Height adjusts to image
             } else if (showOtherPromptFor.name.includes('Slide')) {
-                popupMessage = `<img src='public/UI elements/Slide UI card.jpg' alt='Slide Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='/UI elements/Slide UI card.jpg' alt='Slide Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px'; // Reset padding for image
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)'; // Responsive width
                 interactionPopup.style.height = 'auto'; // Height adjusts
             } else if (showOtherPromptFor.name.includes('Jungle Gym')) {
-                popupMessage = `<img src='public/UI elements/Jungle Gym UI Card.jpg' alt='Jungle Gym Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='/UI elements/Jungle Gym UI Card.jpg' alt='Jungle Gym Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)';
                 interactionPopup.style.height = 'auto';
             } else if (showOtherPromptFor.name.includes('Door')) {
-                popupMessage = `<img src='public/UI elements/Door UI Card.jpg' alt='Door Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='/UI elements/Door UI Card.jpg' alt='Door Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)';
                 interactionPopup.style.height = 'auto';
             } else if (showOtherPromptFor.name.includes('Info-Panel')) {
-                popupMessage = `<img src='public/UI elements/Info-Panel UI Card.jpg' alt='Info Panel Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='/UI elements/Info-Panel UI Card.jpg' alt='Info Panel Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 600px)';
                 interactionPopup.style.height = 'auto';
             } else if (showOtherPromptFor.name.includes('Bench')) {
-                popupMessage = `<img src='public/UI elements/Bench UI Card.jpg' alt='Bench Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
+                popupMessage = `<img src='/UI elements/Bench UI Card.jpg' alt='Bench Info' style='width: 100%; height: auto; display: block; border-radius: 8px;'>`;
                 interactionPopup.style.padding = '0px';
                 interactionPopup.style.width = 'clamp(300px, 50vw, 400px)';
                 interactionPopup.style.height = 'auto';
@@ -1295,10 +1295,10 @@ function updateCharacterMovement(deltaTime) {
 let schoolHallCurrentPage = 0;
 const schoolHallPages = [{
     title: "Page 1",
-    content: "<img src='public/UI elements/School Hall UI-1.jpg' alt='School Hall Info Page 1' style='width: 100%; height: auto; display: block; border-radius: 8px;'>"
+    content: "<img src='/UI elements/School Hall UI-1.jpg' alt='School Hall Info Page 1' style='width: 100%; height: auto; display: block; border-radius: 8px;'>"
 }, {
     title: "Page 2",
-    content: "<img src='public/UI elements/School Hall UI-2.jpg' alt='School Hall Info Page 2' style='width: 100%; height: auto; display: block; border-radius: 8px;'>"
+    content: "<img src='/UI elements/School Hall UI-2.jpg' alt='School Hall Info Page 2' style='width: 100%; height: auto; display: block; border-radius: 8px;'>"
 }];
 
 function updateSchoolHallPopupContent() {
@@ -1545,7 +1545,7 @@ const sheep = spawnSheep();
 // Function to load and place the school hall
 function loadSchoolHall() {
     // Updated to load the new School Hall asset
-    const schoolHallUrl = "public/Models/School_Hall.glb";
+    const schoolHallUrl = "/Models/School_Hall.glb";
     // Ensure the loader uses the DRACO decoder for this asset
     gltfLoader.setDRACOLoader(dracoLoader);
     gltfLoader.load(schoolHallUrl, (gltf) => {
@@ -1617,13 +1617,13 @@ function arrangeScenery() {
 const arrangedScenery = arrangeScenery();
 loadSchoolHall(); // Call the function to load the school hall
 // Asset URLs
-const treeUrl = "public/Models/Tree2-v1.glb";
-const teleportPadUrl = "public/Models/TeleportPad-v1.glb";
-const slideUrl = "public/Models/Slide-v1.glb";
-const junglegymUrl = "public/Models/Junglegym-v1.glb";
-const infoPanelUrl = "public/Models/Info-Panel-v1.glb";
-const doorUrl = "public/Models/Door-v1.glb";
-const benchUrl = "public/Models/Bench-v1.glb";
+const treeUrl = "/Models/Tree2-v1.glb";
+const teleportPadUrl = "/Models/TeleportPad-v1.glb";
+const slideUrl = "/Models/Slide-v1.glb";
+const junglegymUrl = "/Models/Junglegym-v1.glb";
+const infoPanelUrl = "/Models/Info-Panel-v1.glb";
+const doorUrl = "/Models/Door-v1.glb";
+const benchUrl = "/Models/Bench-v1.glb";
 // Function to load a generic GLB asset and add physics
 function loadAsset(url, position, scale, rotationY = 0, physicsOptions = {
     type: 'box',
@@ -1805,7 +1805,7 @@ function createBoundaryWalls() {
     const mapSize = 500; // Must match terrain size
     const wallHeight = 50; // Make walls tall enough
     const wallThickness = 2;
-    const wallTexture = textureLoader.load('public/Textures/Wall-texture.jpg');
+    const wallTexture = textureLoader.load('/Textures/Wall-texture.jpg');
     wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
     wallTexture.repeat.set(mapSize / 50, wallHeight / 50); // Adjust repeat based on wall dimensions
     const wallMaterial = new THREE.MeshStandardMaterial({
