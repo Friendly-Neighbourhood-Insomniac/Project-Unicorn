@@ -1556,7 +1556,8 @@ const bunnies = createBunnies();
 const sheep = spawnSheep();
 // Function to load and place the school hall
 function loadSchoolHall() {
-    const schoolHallUrl = "Public/Models/2School_Hall.glb";
+    // Updated to load the new School Hall asset
+    const schoolHallUrl = "Public/Models/School_Hall.glb";
     // Ensure the loader uses the DRACO decoder for this asset
     gltfLoader.setDRACOLoader(dracoLoader);
     gltfLoader.load(schoolHallUrl, (gltf) => {
