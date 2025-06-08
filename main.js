@@ -35,7 +35,6 @@ const DEBUG = false;
 const debugLog = (...args) => {
     if (DEBUG) console.log(...args);
 };
-
 // Initialize loading manager
 const loadingManager = new THREE.LoadingManager();
 const textureLoader = new THREE.TextureLoader(loadingManager);
@@ -46,7 +45,6 @@ gltfLoader.setDRACOLoader(dracoLoader);
 // Preload the decoder to ensure DRACO compressed assets load correctly
 dracoLoader.preload();
 const rgbeLoader = new RGBELoader(loadingManager); // Add RGBELoader instance
-
 // List of UI card image URLs to preload
 const uiImageUrls = [
     '/UI elements/Tree UI Card.jpg',
@@ -61,7 +59,6 @@ const uiImageUrls = [
     '/UI elements/Controls screen UI.jpg',
     '/UI elements/Start_Screen.jpg'
 ];
-
 let assetsLoaded = false;
 let uiImagesLoaded = 0;
 let typewriterInterval = null; // For managing the typewriter effect
@@ -90,7 +87,6 @@ startScreen.style.justifyContent = 'center';
 startScreen.style.alignItems = 'center';
 startScreen.style.fontFamily = "'Baloo 2', cursive, sans-serif";
 startScreen.style.zIndex = '200';
-
 const gameTitleImage = document.createElement('img');
 gameTitleImage.src = '/UI elements/Start_Screen.jpg';
 gameTitleImage.alt = 'Game Title';
@@ -100,7 +96,6 @@ gameTitleImage.style.maxHeight = 'calc(100vh - 100px)'; // Ensure it fits neatly
 gameTitleImage.style.objectFit = 'contain'; // Ensure aspect ratio is maintained without cropping
 gameTitleImage.style.marginBottom = '20px';
 startScreen.appendChild(gameTitleImage);
-
 const startButton = document.createElement('button');
 startButton.id = 'startButton';
 startButton.innerText = 'Start Game';
@@ -115,7 +110,6 @@ startButton.style.cursor = 'pointer';
 startButton.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
 startButton.disabled = true; // Initially disabled
 startScreen.appendChild(startButton);
-
 // Create loading progress text for Start Screen
 const loadingProgressText = document.createElement('p');
 loadingProgressText.id = 'loadingProgressText';
@@ -135,7 +129,6 @@ function enableStartIfReady() {
         startButton.disabled = false;
     }
 }
-
 // Create a container for top center HUD prompts
 const topPromptsContainer = document.createElement('div');
 topPromptsContainer.id = 'topPromptsContainer';
@@ -148,10 +141,13 @@ topPromptsContainer.style.gap = '10px'; // Space between the prompts
 topPromptsContainer.style.zIndex = '100';
 topPromptsContainer.style.pointerEvents = 'none'; // So it doesn't block interactions
 parentDiv.appendChild(topPromptsContainer);
-
 // Create "Press V to Vibe" UI element
 const vibePromptHUD = document.createElement('div');
 vibePromptHUD.id = 'vibePromptHUD';
+// vibePromptHUD.style.position = 'absolute'; // No longer needed, positioned by flex container
+// vibePromptHUD.style.top = '20px';
+// vibePromptHUD.style.left = '50%';
+// vibePromptHUD.style.transform = 'translateX(-50%)'; // No longer needed
 vibePromptHUD.style.padding = '10px 20px';
 vibePromptHUD.style.backgroundColor = 'rgba(173, 216, 230, 0.8)'; // Pastel light blue with transparency
 vibePromptHUD.style.color = 'white';
@@ -159,13 +155,17 @@ vibePromptHUD.style.fontFamily = "'Baloo 2', cursive, sans-serif";
 vibePromptHUD.style.fontSize = '18px';
 vibePromptHUD.style.borderRadius = '15px'; // Rounded edges
 vibePromptHUD.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.5)'; // Subtle text shadow
+// vibePromptHUD.style.zIndex = '100'; // zIndex handled by container
 vibePromptHUD.innerHTML = 'Press V to Vibe';
 vibePromptHUD.style.display = 'none'; // Initially hidden
 topPromptsContainer.appendChild(vibePromptHUD); // Append to container
-
 // Create "Press R for Controls" UI element
 const controlsPromptHUD = document.createElement('div');
 controlsPromptHUD.id = 'controlsPromptHUD';
+// controlsPromptHUD.style.position = 'absolute'; // No longer needed
+// controlsPromptHUD.style.top = '60px'; 
+// controlsPromptHUD.style.left = '50%';
+// controlsPromptHUD.style.transform = 'translateX(-50%)'; // No longer needed
 controlsPromptHUD.style.padding = '10px 20px';
 controlsPromptHUD.style.backgroundColor = 'rgba(173, 216, 230, 0.8)'; // Same style as vibe prompt
 controlsPromptHUD.style.color = 'white';
@@ -173,10 +173,10 @@ controlsPromptHUD.style.fontFamily = "'Baloo 2', cursive, sans-serif";
 controlsPromptHUD.style.fontSize = '18px';
 controlsPromptHUD.style.borderRadius = '15px';
 controlsPromptHUD.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.5)';
+// controlsPromptHUD.style.zIndex = '100'; // zIndex handled by container
 controlsPromptHUD.innerHTML = 'Press R for Controls';
 controlsPromptHUD.style.display = 'none'; // Initially hidden
 topPromptsContainer.appendChild(controlsPromptHUD); // Append to container
-
 // Create Mute Button HUD element
 const muteButtonHUD = document.createElement('button');
 muteButtonHUD.id = 'muteButtonHUD';
@@ -192,7 +192,6 @@ muteButtonHUD.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.5)';
 muteButtonHUD.innerHTML = 'Press T to Mute'; // Initial text
 muteButtonHUD.style.display = 'none'; // Initially hidden
 topPromptsContainer.appendChild(muteButtonHUD); // Append to container
-
 // Create "Press E to Interact" Prompt
 const interactPromptHUD = document.createElement('div');
 interactPromptHUD.id = 'interactPromptHUD';
@@ -211,7 +210,6 @@ interactPromptHUD.style.zIndex = '100';
 interactPromptHUD.innerHTML = 'Press E to Interact';
 interactPromptHUD.style.display = 'none'; // Initially hidden
 parentDiv.appendChild(interactPromptHUD);
-
 // Create Interaction Pop-up
 const interactionPopup = document.createElement('div');
 interactionPopup.id = 'interactionPopup';
@@ -234,7 +232,6 @@ interactionPopup.style.maxHeight = '90vh'; // Max height relative to viewport
 interactionPopup.style.overflow = 'auto'; // Add scroll if content is too large
 interactionPopup.style.boxSizing = 'border-box';
 parentDiv.appendChild(interactionPopup);
-
 // Create Controls Pop-up Screen
 const controlsPopup = document.createElement('div');
 controlsPopup.id = 'controlsPopup';
@@ -246,6 +243,8 @@ controlsPopup.style.width = '1024px'; // Target width for the image display area
 controlsPopup.style.height = '1536px'; // Target height for the image display area
 controlsPopup.style.maxWidth = 'min(1024px, 90vw)'; // Don't exceed 1024px or 90vw
 controlsPopup.style.maxHeight = 'min(1536px, 90vh)'; // Don't exceed 1536px or 90vh
+// The aspectRatio style is removed as explicit width/height are set.
+// background-size: contain will handle aspect ratio of the image itself.
 controlsPopup.style.padding = '15px'; // Padding for the frame
 controlsPopup.style.boxSizing = 'border-box'; // Width/Height includes padding and border
 controlsPopup.style.backgroundImage = `url('/UI elements/Controls screen UI.jpg')`;
@@ -261,7 +260,6 @@ controlsPopup.style.cursor = 'pointer'; // Indicate it can be clicked to close
 controlsPopup.style.overflow = 'auto'; // Add scrollbars if content overflows due to fixed size
 controlsPopup.style.backgroundColor = 'transparent';
 parentDiv.appendChild(controlsPopup);
-
 // Create Speech Bubble Element
 const speechBubble = document.createElement('div');
 speechBubble.id = 'speechBubble';
@@ -278,7 +276,6 @@ speechBubble.style.fontSize = '16px';
 speechBubble.style.zIndex = '500'; // Higher than other popups
 speechBubble.style.display = 'none'; // Initially hidden
 speechBubble.style.pointerEvents = 'auto'; // Allow interaction with bubble content
-
 // Add a little triangle/tail to the speech bubble
 speechBubble.style.setProperty('--speech-bubble-tail-color', 'rgba(255, 255, 255, 0.95)');
 speechBubble.style.setProperty('--speech-bubble-tail-position', '50%');
@@ -305,7 +302,7 @@ controlsPopup.addEventListener('click', () => {
     controlsPopup.style.display = 'none';
     if (controlsPromptHUD) controlsPromptHUD.style.display = 'flex'; // Show prompt again
 });
-
+// Start screen is now shown by default, no need to explicitly show loading screen
 // Start button event listener
 startButton.addEventListener('click', () => {
     if (assetsLoaded) {
@@ -316,6 +313,8 @@ startButton.addEventListener('click', () => {
         if (sound && !sound.isPlaying && muteButtonHUD.innerHTML === 'Press T to Mute') {
             sound.play();
         }
+        // interactPromptHUD will be shown dynamically
+        // Game starts, no need to show loading screen again
         // Show speech bubble after 5 seconds
         setTimeout(() => {
             if (speechBubble && character) { // Ensure bubble and character exist
@@ -347,7 +346,6 @@ startButton.addEventListener('click', () => {
         }, 5000); // Initial 5-second delay before the first message
     }
 });
-
 // Loading manager events
 loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
     const totalAssetsToLoad = itemsTotal + uiImageUrls.length;
@@ -356,7 +354,6 @@ loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
         loadingProgressText.innerText = `Loading assets... ${progress}%`;
     }
 };
-
 // Preload UI images
 uiImageUrls.forEach(url => {
     textureLoader.load(url, () => {
@@ -367,21 +364,19 @@ uiImageUrls.forEach(url => {
         console.error(`Error preloading UI image ${url}:`, err);
     });
 });
-
 loadingManager.onLoad = function() {
     assetsLoaded = true;
     enableStartIfReady();
+    // HUDs will be shown when startButton is clicked
 };
 
 loadingManager.onError = function(url) {
     console.error('Error loading:', url);
 };
-
 // Audio Listener and Sound
 let audioListener;
 let sound;
 const audioLoader = new THREE.AudioLoader(loadingManager);
-
 // Mute button event listener
 muteButtonHUD.addEventListener('click', () => {
     if (sound) {
@@ -394,7 +389,6 @@ muteButtonHUD.addEventListener('click', () => {
         }
     }
 });
-
 // Initialize the scene
 const scene = new THREE.Scene();
 const world = new CANNON.World();
@@ -424,6 +418,8 @@ const ballGroundContactMaterial = new CANNON.ContactMaterial(
 );
 world.addContactMaterial(ballGroundContactMaterial);
 
+
+
 const clock = new THREE.Clock();
 
 // Initialize the camera
@@ -436,12 +432,10 @@ const camera = new THREE.PerspectiveCamera(
 // Adjusted camera position
 camera.position.set(0, 20, 30); // Increased initial Y position
 camera.lookAt(0, 0, 0);
-
 // Initialize Audio
 audioListener = new THREE.AudioListener();
 camera.add(audioListener); // Add listener to the camera
 sound = new THREE.Audio(audioListener);
-
 // Placeholder for music URL - replace with actual URL
 const musicURL = '/Textures/BackgroundMusic 1.mp3';
 audioLoader.load(musicURL, function(buffer) {
@@ -453,7 +447,6 @@ audioLoader.load(musicURL, function(buffer) {
 }, undefined, function(error) {
     console.error('Error loading ambient music:', error);
 });
-
 // Camera settings for character following
 const cameraSettings = {
     offset: new THREE.Vector3(0, 15, 30), // Further Increased camera offset Y
@@ -510,6 +503,7 @@ composer.setSize(parentDiv.clientWidth, parentDiv.clientHeight);
 const skyColor = new THREE.Color(0x87ceeb); // Bright sky blue
 const groundColor = new THREE.Color(0xffffff); // White ground reflection
 
+
 const hdriUrl = "/Textures/table_mountain_1_puresky_2k.hdr";
 rgbeLoader.load(hdriUrl, (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -542,6 +536,7 @@ function createTerrain() {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(50, 50); // Increased texture repeat to maintain proper scaling
     texture.encoding = THREE.sRGBEncoding;
+
 
     const material = new THREE.MeshStandardMaterial({
         map: texture,
@@ -585,7 +580,6 @@ scene.add(sunLight);
 // Add hemisphere light to simulate sky and ground bounce light
 const hemiLight = new THREE.HemisphereLight(skyColor, new THREE.Color(0xebd1b3), 1.8); // Brighter Hemi, warmer ground
 scene.add(hemiLight);
-
 // =========================
 // Character Integration
 // =========================
@@ -614,7 +608,6 @@ let slideObject = null;
 let teleportPadObject = null;
 let schoolHallObject = null; // Added for school hall
 let interactionPopupVisible = false;
-
 // Animation states
 const AnimationState = {
     IDLE: 'idle',
@@ -624,699 +617,8 @@ const AnimationState = {
     DANCE: 'dance', // Added for dance state
 };
 let currentAnimationState = AnimationState.IDLE;
-
 const keysPressed = {
     w: false,
     a: false,
     s: false,
-    d: false,
-    space: false,
-    v: false, // For dance
-    e: false, // For interaction
-    r: false, // For controls
-    t: false, // For mute
-};
-
-// Character physics settings
-const characterSettings = {
-    mass: 1,
-    radius: 0.5,
-    height: 1.8,
-    jumpForce: 8,
-    maxJumps: 2,
-    jumpCooldown: 200,
-    moveSpeed: 8,
-    airMoveSpeed: 4,
-    groundDamping: 0.9,
-    airDamping: 0.98,
-};
-
-// Load character model and animations
-function loadCharacter() {
-    // Load idle animation
-    gltfLoader.load('./Models/idle.glb', (gltf) => {
-        character = gltf.scene;
-        character.scale.set(1, 1, 1);
-        character.position.set(0, 0, 0);
-        character.castShadow = true;
-        character.receiveShadow = true;
-        
-        // Traverse and set shadow properties
-        character.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(character);
-        
-        // Setup animation mixer
-        mixer = new THREE.AnimationMixer(character);
-        
-        // Setup idle animation
-        if (gltf.animations.length > 0) {
-            idleAction = mixer.clipAction(gltf.animations[0]);
-            idleAction.play();
-        }
-        
-        // Load skip animation
-        gltfLoader.load('./Models/skip.glb', (skipGltf) => {
-            if (skipGltf.animations.length > 0) {
-                skipAction = mixer.clipAction(skipGltf.animations[0]);
-            }
-        });
-        
-        // Load dance animation
-        gltfLoader.load('./Models/dance.glb', (danceGltf) => {
-            if (danceGltf.animations.length > 0) {
-                danceAction = mixer.clipAction(danceGltf.animations[0]);
-            }
-        });
-        
-        // Create physics body for character
-        const characterShape = new CANNON.Cylinder(
-            characterSettings.radius,
-            characterSettings.radius,
-            characterSettings.height,
-            8
-        );
-        characterBody = new CANNON.Body({
-            mass: characterSettings.mass,
-            shape: characterShape,
-            material: new CANNON.Material('character'),
-        });
-        characterBody.position.set(0, 1, 0);
-        characterBody.fixedRotation = true;
-        characterBody.updateMassProperties();
-        world.addBody(characterBody);
-        
-        debugLog("Character loaded successfully");
-    }, undefined, (error) => {
-        console.error('Error loading character:', error);
-    });
-}
-
-// Animation transition function
-function transitionToAnimation(newState) {
-    if (currentAnimationState === newState) return;
     
-    const previousState = currentAnimationState;
-    currentAnimationState = newState;
-    
-    // Fade out previous animation
-    let previousAction = null;
-    switch (previousState) {
-        case AnimationState.IDLE:
-            previousAction = idleAction;
-            break;
-        case AnimationState.MOVING:
-            previousAction = skipAction;
-            break;
-        case AnimationState.DANCE:
-            previousAction = danceAction;
-            break;
-    }
-    
-    // Fade in new animation
-    let newAction = null;
-    switch (newState) {
-        case AnimationState.IDLE:
-            newAction = idleAction;
-            break;
-        case AnimationState.MOVING:
-            newAction = skipAction;
-            break;
-        case AnimationState.DANCE:
-            newAction = danceAction;
-            break;
-    }
-    
-    if (previousAction && newAction && previousAction !== newAction) {
-        previousAction.fadeOut(0.3);
-        newAction.reset().fadeIn(0.3).play();
-    } else if (newAction && !previousAction) {
-        newAction.reset().fadeIn(0.3).play();
-    }
-}
-
-// Ground detection
-function checkGrounded() {
-    if (!characterBody) return false;
-    
-    const raycastResult = new CANNON.RaycastResult();
-    const rayDirection = new CANNON.Vec3(0, -1, 0);
-    const rayStart = characterBody.position.clone();
-    rayStart.y += 0.1;
-    
-    world.raycastClosest(rayStart, rayStart.vadd(rayDirection.scale(characterSettings.height / 2 + 0.2)), {}, raycastResult);
-    
-    if (raycastResult.hasHit) {
-        contactNormal.copy(raycastResult.hitNormalWorld);
-        const dot = contactNormal.dot(upAxis);
-        return dot > 0.7; // Surface is walkable if normal is close to up
-    }
-    
-    return false;
-}
-
-// Character movement
-function updateCharacterMovement(deltaTime) {
-    if (!character || !characterBody) return;
-    
-    // Check if grounded
-    isGrounded = checkGrounded();
-    
-    // Reset jump count when grounded
-    if (isGrounded) {
-        currentJumps = 0;
-    }
-    
-    // Calculate movement direction
-    moveDirection.set(0, 0, 0);
-    
-    if (keysPressed.w) moveDirection.z -= 1;
-    if (keysPressed.s) moveDirection.z += 1;
-    if (keysPressed.a) moveDirection.x -= 1;
-    if (keysPressed.d) moveDirection.x += 1;
-    
-    // Normalize movement direction
-    if (moveDirection.length() > 0) {
-        moveDirection.normalize();
-        
-        // Apply camera rotation to movement
-        const cameraDirection = new THREE.Vector3();
-        camera.getWorldDirection(cameraDirection);
-        cameraDirection.y = 0;
-        cameraDirection.normalize();
-        
-        const cameraRight = new THREE.Vector3();
-        cameraRight.crossVectors(cameraDirection, new THREE.Vector3(0, 1, 0));
-        
-        const worldMoveDirection = new THREE.Vector3();
-        worldMoveDirection.addScaledVector(cameraRight, moveDirection.x);
-        worldMoveDirection.addScaledVector(cameraDirection, -moveDirection.z);
-        
-        // Apply movement force
-        const moveSpeed = isGrounded ? characterSettings.moveSpeed : characterSettings.airMoveSpeed;
-        const force = new CANNON.Vec3(
-            worldMoveDirection.x * moveSpeed,
-            0,
-            worldMoveDirection.z * moveSpeed
-        );
-        characterBody.applyForce(force);
-        
-        // Rotate character to face movement direction
-        if (worldMoveDirection.length() > 0) {
-            const targetRotation = Math.atan2(worldMoveDirection.x, worldMoveDirection.z);
-            character.rotation.y = THREE.MathUtils.lerp(character.rotation.y, targetRotation, 0.1);
-        }
-    }
-    
-    // Jumping
-    if (keysPressed.space && currentJumps < characterSettings.maxJumps) {
-        const currentTime = Date.now();
-        if (currentTime - lastJumpTime > characterSettings.jumpCooldown) {
-            const jumpForce = new CANNON.Vec3(0, characterSettings.jumpForce, 0);
-            characterBody.applyImpulse(jumpForce);
-            currentJumps++;
-            lastJumpTime = currentTime;
-        }
-    }
-    
-    // Apply damping
-    const damping = isGrounded ? characterSettings.groundDamping : characterSettings.airDamping;
-    characterBody.velocity.x *= damping;
-    characterBody.velocity.z *= damping;
-    
-    // Update character visual position
-    character.position.copy(characterBody.position);
-    character.position.y -= characterSettings.height / 2; // Adjust for cylinder center
-    
-    // Update animation state
-    const isMoving = moveDirection.length() > 0;
-    const isDancing = keysPressed.v;
-    
-    if (isDancing && danceAction) {
-        transitionToAnimation(AnimationState.DANCE);
-    } else if (isMoving) {
-        transitionToAnimation(AnimationState.MOVING);
-    } else {
-        transitionToAnimation(AnimationState.IDLE);
-    }
-}
-
-// Camera following
-function updateCameraFollow() {
-    if (!character) return;
-    
-    const targetPosition = character.position.clone().add(cameraSettings.offset);
-    camera.position.lerp(targetPosition, cameraSettings.smoothSpeed);
-    
-    // Make camera look at character
-    const lookAtTarget = character.position.clone();
-    lookAtTarget.y += 2; // Look at character's upper body
-    camera.lookAt(lookAtTarget);
-    
-    // Update controls target
-    controls.target.copy(lookAtTarget);
-}
-
-// Speech bubble positioning
-function updateSpeechBubblePosition() {
-    if (!character || !speechBubble || speechBubble.style.display === 'none') return;
-    
-    // Get character's screen position
-    const characterScreenPosition = character.position.clone();
-    characterScreenPosition.y += 3; // Position above character's head
-    characterScreenPosition.project(camera);
-    
-    // Convert to screen coordinates
-    const x = (characterScreenPosition.x * 0.5 + 0.5) * window.innerWidth;
-    const y = (characterScreenPosition.y * -0.5 + 0.5) * window.innerHeight;
-    
-    // Position speech bubble
-    speechBubble.style.left = `${x}px`;
-    speechBubble.style.top = `${y - 60}px`; // Offset above character
-    speechBubble.style.transform = 'translate(-50%, -100%)';
-}
-
-// Typewriter effect function
-function typewriterEffect(element, text, speed = 50) {
-    if (typewriterInterval) {
-        clearInterval(typewriterInterval);
-    }
-    
-    element.innerHTML = '';
-    let i = 0;
-    
-    typewriterInterval = setInterval(() => {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-        } else {
-            clearInterval(typewriterInterval);
-            typewriterInterval = null;
-        }
-    }, speed);
-}
-
-// Load interactive objects
-function loadInteractiveObjects() {
-    // Load Info Panel
-    gltfLoader.load('./Models/Info-Panel-v1.glb', (gltf) => {
-        const infoPanelMesh = gltf.scene;
-        infoPanelMesh.position.set(10, 0, 10);
-        infoPanelMesh.scale.set(1, 1, 1);
-        infoPanelMesh.castShadow = true;
-        infoPanelMesh.receiveShadow = true;
-        
-        infoPanelMesh.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(infoPanelMesh);
-        
-        // Create physics body
-        const infoPanelShape = new CANNON.Box(new CANNON.Vec3(2, 2, 0.5));
-        const infoPanelBody = new CANNON.Body({ mass: 0 });
-        infoPanelBody.addShape(infoPanelShape);
-        infoPanelBody.position.set(10, 2, 10);
-        world.addBody(infoPanelBody);
-        
-        infoPanelObject = { mesh: infoPanelMesh, body: infoPanelBody };
-        debugLog("Info Panel loaded");
-    });
-    
-    // Load Bench
-    gltfLoader.load('./Models/Bench-v1.glb', (gltf) => {
-        const benchMesh = gltf.scene;
-        benchMesh.position.set(-10, 0, 10);
-        benchMesh.scale.set(1, 1, 1);
-        benchMesh.castShadow = true;
-        benchMesh.receiveShadow = true;
-        
-        benchMesh.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(benchMesh);
-        
-        // Create physics body
-        const benchShape = new CANNON.Box(new CANNON.Vec3(2, 1, 0.5));
-        const benchBody = new CANNON.Body({ mass: 0 });
-        benchBody.addShape(benchShape);
-        benchBody.position.set(-10, 1, 10);
-        world.addBody(benchBody);
-        
-        benchObject = { mesh: benchMesh, body: benchBody };
-        debugLog("Bench loaded");
-    });
-    
-    // Load Tree
-    gltfLoader.load('./Models/Tree2-v1.glb', (gltf) => {
-        const treeMesh = gltf.scene;
-        treeMesh.position.set(20, 0, -10);
-        treeMesh.scale.set(1, 1, 1);
-        treeMesh.castShadow = true;
-        treeMesh.receiveShadow = true;
-        
-        treeMesh.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(treeMesh);
-        
-        // Create physics body
-        const treeShape = new CANNON.Cylinder(1, 1, 8, 8);
-        const treeBody = new CANNON.Body({ mass: 0 });
-        treeBody.addShape(treeShape);
-        treeBody.position.set(20, 4, -10);
-        world.addBody(treeBody);
-        
-        treeObject = { mesh: treeMesh, body: treeBody };
-        debugLog("Tree loaded");
-    });
-    
-    // Load Jungle Gym
-    gltfLoader.load('./Models/Junglegym-v1.glb', (gltf) => {
-        const junglegymMesh = gltf.scene;
-        junglegymMesh.position.set(-20, 0, -10);
-        junglegymMesh.scale.set(1, 1, 1);
-        junglegymMesh.castShadow = true;
-        junglegymMesh.receiveShadow = true;
-        
-        junglegymMesh.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(junglegymMesh);
-        
-        // Create physics body
-        const junglegymShape = new CANNON.Box(new CANNON.Vec3(3, 3, 3));
-        const junglegymBody = new CANNON.Body({ mass: 0 });
-        junglegymBody.addShape(junglegymShape);
-        junglegymBody.position.set(-20, 3, -10);
-        world.addBody(junglegymBody);
-        
-        junglegymObject = { mesh: junglegymMesh, body: junglegymBody };
-        debugLog("Jungle Gym loaded");
-    });
-    
-    // Load Door
-    gltfLoader.load('./Models/Door-v1.glb', (gltf) => {
-        const doorMesh = gltf.scene;
-        doorMesh.position.set(0, 0, -20);
-        doorMesh.scale.set(1, 1, 1);
-        doorMesh.castShadow = true;
-        doorMesh.receiveShadow = true;
-        
-        doorMesh.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(doorMesh);
-        
-        // Create physics body
-        const doorShape = new CANNON.Box(new CANNON.Vec3(1, 2, 0.2));
-        const doorBody = new CANNON.Body({ mass: 0 });
-        doorBody.addShape(doorShape);
-        doorBody.position.set(0, 2, -20);
-        world.addBody(doorBody);
-        
-        doorObject = { mesh: doorMesh, body: doorBody };
-        debugLog("Door loaded");
-    });
-    
-    // Load Slide
-    gltfLoader.load('./Models/Slide-v1.glb', (gltf) => {
-        const slideMesh = gltf.scene;
-        slideMesh.position.set(15, 0, 20);
-        slideMesh.scale.set(1, 1, 1);
-        slideMesh.castShadow = true;
-        slideMesh.receiveShadow = true;
-        
-        slideMesh.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(slideMesh);
-        
-        // Create physics body
-        const slideShape = new CANNON.Box(new CANNON.Vec3(2, 3, 4));
-        const slideBody = new CANNON.Body({ mass: 0 });
-        slideBody.addShape(slideShape);
-        slideBody.position.set(15, 3, 20);
-        world.addBody(slideBody);
-        
-        slideObject = { mesh: slideMesh, body: slideBody };
-        debugLog("Slide loaded");
-    });
-    
-    // Load Teleport Pad
-    gltfLoader.load('./Models/TeleportPad-v1.glb', (gltf) => {
-        const teleportPadMesh = gltf.scene;
-        teleportPadMesh.position.set(-15, 0, 20);
-        teleportPadMesh.scale.set(1, 1, 1);
-        teleportPadMesh.castShadow = true;
-        teleportPadMesh.receiveShadow = true;
-        
-        teleportPadMesh.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(teleportPadMesh);
-        
-        // Create physics body
-        const teleportPadShape = new CANNON.Cylinder(2, 2, 0.5, 8);
-        const teleportPadBody = new CANNON.Body({ mass: 0 });
-        teleportPadBody.addShape(teleportPadShape);
-        teleportPadBody.position.set(-15, 0.25, 20);
-        world.addBody(teleportPadBody);
-        
-        teleportPadObject = { mesh: teleportPadMesh, body: teleportPadBody };
-        debugLog("Teleport Pad loaded");
-    });
-    
-    // Load School Hall
-    gltfLoader.load('./Models/School_Hall.glb', (gltf) => {
-        const schoolHallMesh = gltf.scene;
-        schoolHallMesh.position.set(0, 0, 40);
-        schoolHallMesh.scale.set(1, 1, 1);
-        schoolHallMesh.castShadow = true;
-        schoolHallMesh.receiveShadow = true;
-        
-        schoolHallMesh.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        scene.add(schoolHallMesh);
-        
-        // Create physics body
-        const schoolHallShape = new CANNON.Box(new CANNON.Vec3(8, 4, 6));
-        const schoolHallBody = new CANNON.Body({ mass: 0 });
-        schoolHallBody.addShape(schoolHallShape);
-        schoolHallBody.position.set(0, 4, 40);
-        world.addBody(schoolHallBody);
-        
-        schoolHallObject = { mesh: schoolHallMesh, body: schoolHallBody };
-        debugLog("School Hall loaded");
-    });
-}
-
-// Interaction system
-function checkInteractions() {
-    if (!character) return;
-    
-    const characterPosition = character.position;
-    const interactionDistance = 5;
-    let nearestObject = null;
-    let nearestDistance = Infinity;
-    
-    // Check all interactive objects
-    const objects = [
-        { obj: infoPanelObject, name: 'Info Panel', image: '/UI elements/Info-Panel UI Card.jpg' },
-        { obj: benchObject, name: 'Bench', image: '/UI elements/Bench UI Card.jpg' },
-        { obj: treeObject, name: 'Tree', image: '/UI elements/Tree UI Card.jpg' },
-        { obj: junglegymObject, name: 'Jungle Gym', image: '/UI elements/Jungle Gym UI Card.jpg' },
-        { obj: doorObject, name: 'Door', image: '/UI elements/Door UI Card.jpg' },
-        { obj: slideObject, name: 'Slide', image: '/UI elements/Slide UI card.jpg' },
-        { obj: teleportPadObject, name: 'Teleport Pad', image: '/UI elements/TeleportPad UI Card.jpg' },
-        { obj: schoolHallObject, name: 'School Hall', image: '/UI elements/School Hall UI-1.jpg' }
-    ];
-    
-    objects.forEach(({ obj, name, image }) => {
-        if (obj && obj.mesh) {
-            const distance = characterPosition.distanceTo(obj.mesh.position);
-            if (distance < interactionDistance && distance < nearestDistance) {
-                nearestDistance = distance;
-                nearestObject = { obj, name, image };
-            }
-        }
-    });
-    
-    // Show/hide interaction prompt
-    if (nearestObject) {
-        interactPromptHUD.style.display = 'block';
-        
-        // Handle interaction
-        if (keysPressed.e && !interactionPopupVisible) {
-            showInteractionPopup(nearestObject.name, nearestObject.image);
-        }
-    } else {
-        interactPromptHUD.style.display = 'none';
-    }
-}
-
-function showInteractionPopup(objectName, imagePath) {
-    interactionPopupVisible = true;
-    interactionPopup.innerHTML = `<img src="${imagePath}" style="width: 100%; height: auto; border-radius: 8px;" alt="${objectName}">`;
-    interactionPopup.style.display = 'block';
-    
-    // Hide interaction prompt while popup is visible
-    interactPromptHUD.style.display = 'none';
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        hideInteractionPopup();
-    }, 5000);
-}
-
-function hideInteractionPopup() {
-    interactionPopupVisible = false;
-    interactionPopup.style.display = 'none';
-}
-
-// Event listeners
-document.addEventListener('keydown', (event) => {
-    const key = event.key.toLowerCase();
-    
-    if (key in keysPressed) {
-        keysPressed[key] = true;
-    }
-    
-    // Handle special keys
-    if (key === ' ') {
-        keysPressed.space = true;
-        event.preventDefault();
-    }
-    
-    // Controls popup
-    if (key === 'r') {
-        if (controlsPopup.style.display === 'none') {
-            controlsPopup.style.display = 'block';
-            controlsPromptHUD.style.display = 'none';
-        }
-    }
-    
-    // Mute toggle
-    if (key === 't') {
-        if (sound) {
-            if (sound.isPlaying) {
-                sound.pause();
-                muteButtonHUD.innerHTML = 'Press T to Unmute';
-            } else {
-                sound.play();
-                muteButtonHUD.innerHTML = 'Press T to Mute';
-            }
-        }
-    }
-    
-    // Close interaction popup
-    if (key === 'escape' && interactionPopupVisible) {
-        hideInteractionPopup();
-    }
-});
-
-document.addEventListener('keyup', (event) => {
-    const key = event.key.toLowerCase();
-    
-    if (key in keysPressed) {
-        keysPressed[key] = false;
-    }
-    
-    if (key === ' ') {
-        keysPressed.space = false;
-    }
-});
-
-// Click to close interaction popup
-interactionPopup.addEventListener('click', hideInteractionPopup);
-
-// Window resize handler
-function onWindowResize() {
-    camera.aspect = parentDiv.clientWidth / parentDiv.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(parentDiv.clientWidth, parentDiv.clientHeight);
-    composer.setSize(parentDiv.clientWidth, parentDiv.clientHeight);
-}
-
-window.addEventListener('resize', onWindowResize);
-
-// Initialize everything
-function init() {
-    createTerrain();
-    loadCharacter();
-    loadInteractiveObjects();
-}
-
-// Animation loop
-function animate() {
-    requestAnimationFrame(animate);
-    
-    const deltaTime = clock.getDelta();
-    
-    // Update physics
-    world.step(1/60, deltaTime, 3);
-    
-    // Update character
-    updateCharacterMovement(deltaTime);
-    
-    // Update camera
-    updateCameraFollow();
-    
-    // Update speech bubble position
-    updateSpeechBubblePosition();
-    
-    // Check interactions
-    checkInteractions();
-    
-    // Update animations
-    if (mixer) {
-        mixer.update(deltaTime);
-    }
-    
-    // Update controls
-    controls.update();
-    
-    // Render
-    composer.render();
-}
-
-// Start the application
-init();
-animate();
