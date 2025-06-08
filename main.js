@@ -29,6 +29,12 @@ import {
 import {
     RGBELoader
 } from 'three/addons/loaders/RGBELoader.js';
+
+// Debug flag and helper
+const DEBUG = false;
+const debugLog = (...args) => {
+    if (DEBUG) console.log(...args);
+};
 // Initialize loading manager
 const loadingManager = new THREE.LoadingManager();
 const textureLoader = new THREE.TextureLoader(loadingManager);
@@ -379,7 +385,7 @@ loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
 uiImageUrls.forEach(url => {
     textureLoader.load(url, () => {
         uiImagesLoaded++;
-        console.log(`Preloaded UI image: ${url}`);
+        debugLog(`Preloaded UI image: ${url}`);
         enableStartIfReady();
     }, undefined, (err) => {
         console.error(`Error preloading UI image ${url}:`, err);
@@ -464,7 +470,7 @@ audioLoader.load(musicURL, function(buffer) {
     sound.setLoop(true);
     sound.setVolume(0.5); // Set volume to 50%
     // Do not play immediately, will be started by startButton or if unmuted
-    console.log("Ambient music loaded.");
+    debugLog("Ambient music loaded.");
 }, undefined, function(error) {
     console.error('Error loading ambient music:', error);
 });
@@ -530,7 +536,7 @@ rgbeLoader.load(hdriUrl, (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
-    console.log("HDRI loaded and applied to scene background and environment.");
+    debugLog("HDRI loaded and applied to scene background and environment.");
 }, undefined, (error) => {
     console.error('Error loading HDRI:', error);
     // Fallback to a simple color background if HDRI fails
@@ -772,7 +778,7 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
             if (!child.userData.rotationApplied) { // Apply only once
                 child.rotation.y = 0; // Assuming model's natural front is +X when local rotation is 0
                 child.userData.rotationApplied = true;
-                console.log("Applied rotation to child mesh:", child.name, "with rotation", child.rotation.y);
+                debugLog("Applied rotation to child mesh:", child.name, "with rotation", child.rotation.y);
             }
         }
     });
@@ -825,10 +831,10 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
             otherObjectName = teleportPadObject.name;
         }
         // You could add more else if blocks for other named objects like walls, school hall, etc.
-        console.log(`Character collided with body ID: ${otherBody.id}, Name: ${otherObjectName}, Material: ${otherBody.material ? otherBody.material.name : 'N/A'}. ContactNormal.y: ${contactNormal.y.toFixed(2)}`);
+        debugLog(`Character collided with body ID: ${otherBody.id}, Name: ${otherObjectName}, Material: ${otherBody.material ? otherBody.material.name : 'N/A'}. ContactNormal.y: ${contactNormal.y.toFixed(2)}`);
         // Extended debugging: Log details of all bodies if collision is with an 'Unknown Object' or specifically Tree (if it ever gets logged)
         if (otherObjectName === "Unknown Object" || (treeObject && otherBody === treeObject.body)) {
-            console.log("Extended collision debug - World bodies state:");
+            debugLog("Extended collision debug - World bodies state:");
             world.bodies.forEach(b => {
                 let name = "N/A";
                 if (infoPanelObject && b === infoPanelObject.body) name = infoPanelObject.name;
@@ -840,9 +846,9 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
                 else if (teleportPadObject && b === teleportPadObject.body) name = teleportPadObject.name;
                 else if (characterBody && b === characterBody) name = "Character";
                 else if (b.shapes[0] instanceof CANNON.Plane) name = "Ground Plane";
-                console.log(`  Body ID: ${b.id}, Name: ${name}, Mass: ${b.mass}, Material: ${b.material ? b.material.name : 'None'}, Type: ${b.type === CANNON.Body.STATIC ? 'Static' : b.type === CANNON.Body.DYNAMIC ? 'Dynamic' : 'Kinematic'}, Pos: (${b.position.x.toFixed(1)}, ${b.position.y.toFixed(1)}, ${b.position.z.toFixed(1)})`);
+                debugLog(`  Body ID: ${b.id}, Name: ${name}, Mass: ${b.mass}, Material: ${b.material ? b.material.name : 'None'}, Type: ${b.type === CANNON.Body.STATIC ? 'Static' : b.type === CANNON.Body.DYNAMIC ? 'Dynamic' : 'Kinematic'}, Pos: (${b.position.x.toFixed(1)}, ${b.position.y.toFixed(1)}, ${b.position.z.toFixed(1)})`);
                 b.shapes.forEach((s, index) => {
-                    console.log(`    Shape ${index}: Type: ${s.constructor.name}, Radius: ${s.radius ? s.radius.toFixed(2) : 'N/A'}, Height: ${s.height ? s.height.toFixed(2) : 'N/A'}`);
+                    debugLog(`    Shape ${index}: Type: ${s.constructor.name}, Radius: ${s.radius ? s.radius.toFixed(2) : 'N/A'}, Height: ${s.height ? s.height.toFixed(2) : 'N/A'}`);
                 });
             });
         }
@@ -891,7 +897,7 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
             idleAction.setLoop(THREE.LoopRepeat);
             idleAction.setEffectiveWeight(1);
             idleAction.play();
-            console.log("Playing Idle animation from idle.glb:", mainIdleClip.name);
+            debugLog("Playing Idle animation from idle.glb:", mainIdleClip.name);
             currentAnimationState = AnimationState.IDLE;
         } else {
             console.warn("No suitable Idle animation found in idle.glb.");
@@ -908,7 +914,7 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
                 skipAction = mixer.clipAction(clip);
                 skipAction.setLoop(THREE.LoopRepeat);
                 skipAction.setEffectiveWeight(0); // Initially not playing
-                console.log("Loaded Skip animation from skip.glb:", clip.name);
+                debugLog("Loaded Skip animation from skip.glb:", clip.name);
                 // Animation names HUD removed
             } else {
                 console.warn("No suitable Skip animation found in skip.glb.");
@@ -928,7 +934,7 @@ gltfLoader.load(characterUrl, (gltf) => { // DRACOLoader is implicitly used by g
                 danceAction = mixer.clipAction(clip);
                 danceAction.setLoop(THREE.LoopRepeat);
                 danceAction.setEffectiveWeight(0); // Initially not playing
-                console.log("Loaded Dance animation from dance.glb:", clip.name);
+                debugLog("Loaded Dance animation from dance.glb:", clip.name);
                 // Animation names HUD removed
             } else {
                 console.warn("No suitable Dance animation found in dance.glb.");
@@ -1578,7 +1584,7 @@ function loadSchoolHall() {
             }
         });
         scene.add(model);
-        console.log(`School Hall model loaded and added to scene at X:${model.position.x.toFixed(2)}, Z:${model.position.z.toFixed(2)}. Scaled height: ${hallSize.y.toFixed(2)}`);
+        debugLog(`School Hall model loaded and added to scene at X:${model.position.x.toFixed(2)}, Z:${model.position.z.toFixed(2)}. Scaled height: ${hallSize.y.toFixed(2)}`);
         // Physics body setup
         // The hallSize is now based on the scaled model
         const hallShape = new CANNON.Box(new CANNON.Vec3(hallSize.x / 2, hallSize.y / 2, hallSize.z / 2));
@@ -1598,20 +1604,20 @@ function loadSchoolHall() {
         hallBody.quaternion.copy(q);
         hallBody.addShape(hallShape);
         world.addBody(hallBody);
-        console.log("School Hall physics body created with size:", hallSize.x, hallSize.y, hallSize.z);
+        debugLog("School Hall physics body created with size:", hallSize.x, hallSize.y, hallSize.z);
         schoolHallObject = {
             mesh: model,
             body: hallBody,
             name: "School Hall"
         }; // Store the school hall object
-        console.log("School Hall object stored for interaction.");
+        debugLog("School Hall object stored for interaction.");
     }, undefined, (error) => {
         console.error('Error loading School Hall model (ensure DRACO decoders are available if compressed):', error);
     });
 }
 // Placeholder for arrangeScenery function to prevent runtime errors
 function arrangeScenery() {
-    console.log("arrangeScenery called - currently a placeholder.");
+    debugLog("arrangeScenery called - currently a placeholder.");
     // Future: Add logic to arrange or create additional scenery elements.
     // For now, it can return an empty array or an object indicating no specific scenery was arranged.
     return {
@@ -1684,7 +1690,7 @@ function loadAsset(url, position, scale, rotationY = 0, physicsOptions = {
                 // For Tree2-v1, let's try deriving from visual bounds as a test
                 radius = Math.max(finalModelSize.x, finalModelSize.z) / 2;
                 height = finalModelSize.y;
-                console.log(`Tree2-v1: Using visual bounds for physics cylinder. Radius: ${radius.toFixed(2)}, Height: ${height.toFixed(2)}`);
+                debugLog(`Tree2-v1: Using visual bounds for physics cylinder. Radius: ${radius.toFixed(2)}, Height: ${height.toFixed(2)}`);
             } else {
                 radius = physicsOptions.radius !== undefined ? physicsOptions.radius : Math.max(finalModelSize.x, finalModelSize.z) / 2;
                 height = physicsOptions.height !== undefined ? physicsOptions.height : finalModelSize.y;
@@ -1697,7 +1703,7 @@ function loadAsset(url, position, scale, rotationY = 0, physicsOptions = {
             });
             physicsBody.addShape(shape);
             if (assetName === "Tree2-v1") {
-                console.log(`Tree2-v1 CYLINDER physics body CREATED. Mass: ${physicsBody.mass}. Position: Y=${physicsBody.position.y.toFixed(2)} (Center). Shape height: ${height.toFixed(2)}, Shape Radius: ${radius.toFixed(2)}`);
+                debugLog(`Tree2-v1 CYLINDER physics body CREATED. Mass: ${physicsBody.mass}. Position: Y=${physicsBody.position.y.toFixed(2)} (Center). Shape height: ${height.toFixed(2)}, Shape Radius: ${radius.toFixed(2)}`);
             }
         }
         if (physicsBody) {
@@ -1705,10 +1711,10 @@ function loadAsset(url, position, scale, rotationY = 0, physicsOptions = {
             q.setFromEuler(rotationX, rotationY, 0, 'XYZ');
             physicsBody.quaternion.copy(q);
             if (assetName === "Tree2-v1") {
-                console.log(`BEFORE ADDING Tree2-v1 to world. Body ID: ${physicsBody.id}, Position: ${physicsBody.position.toString()}, Num Shapes: ${physicsBody.shapes.length}`);
+                debugLog(`BEFORE ADDING Tree2-v1 to world. Body ID: ${physicsBody.id}, Position: ${physicsBody.position.toString()}, Num Shapes: ${physicsBody.shapes.length}`);
             }
             world.addBody(physicsBody);
-            console.log(`${assetName} added to world. Visuals at Y: ${model.position.y.toFixed(2)}, Physics body center Y: ${physicsBody.position.y.toFixed(2)}. Model Height: ${finalModelSize.y.toFixed(2)}`);
+            debugLog(`${assetName} added to world. Visuals at Y: ${model.position.y.toFixed(2)}, Physics body center Y: ${physicsBody.position.y.toFixed(2)}. Model Height: ${finalModelSize.y.toFixed(2)}`);
             if (assetName === "Info-Panel") {
                 infoPanelObject = {
                     mesh: model,
@@ -1727,11 +1733,11 @@ function loadAsset(url, position, scale, rotationY = 0, physicsOptions = {
                     body: physicsBody,
                     name: assetName
                 };
-                console.log("Tree object successfully stored for interaction. Body ID:", physicsBody.id);
+                debugLog("Tree object successfully stored for interaction. Body ID:", physicsBody.id);
                 if (!world.bodies.includes(physicsBody)) {
                     console.error(`CRITICAL: Tree physics body (ID: ${physicsBody.id}) WAS NOT found in world.bodies immediately after addBody!`);
                 } else {
-                    console.log(`CONFIRMED: Tree physics body (ID: ${physicsBody.id}) IS in world.bodies. Mass: ${physicsBody.mass}, Material: ${physicsBody.material ? physicsBody.material.name : 'N/A'}`);
+                    debugLog(`CONFIRMED: Tree physics body (ID: ${physicsBody.id}) IS in world.bodies. Mass: ${physicsBody.mass}, Material: ${physicsBody.material ? physicsBody.material.name : 'N/A'}`);
                 }
             } else if (assetName === "Jungle Gym") {
                 junglegymObject = {
