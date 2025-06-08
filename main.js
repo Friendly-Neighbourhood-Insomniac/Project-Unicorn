@@ -36,6 +36,8 @@ const gltfLoader = new GLTFLoader(loadingManager);
 const dracoLoader = new DRACOLoader(loadingManager);
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 gltfLoader.setDRACOLoader(dracoLoader);
+// Preload the decoder to ensure DRACO compressed assets load correctly
+dracoLoader.preload();
 const rgbeLoader = new RGBELoader(loadingManager); // Add RGBELoader instance
 // List of UI card image URLs to preload
 const uiImageUrls = [
@@ -1549,6 +1551,8 @@ const sheep = spawnSheep();
 // Function to load and place the school hall
 function loadSchoolHall() {
     const schoolHallUrl = "Public/Models/2School_Hall.glb";
+    // Ensure the loader uses the DRACO decoder for this asset
+    gltfLoader.setDRACOLoader(dracoLoader);
     gltfLoader.load(schoolHallUrl, (gltf) => {
         const model = gltf.scene;
         const initialScale = 150; // Upscaled to 150
