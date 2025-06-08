@@ -49,7 +49,7 @@ const uiImageUrls = [
     'Public/UI elements/School Hall UI-1.jpg',
     'Public/UI elements/School Hall UI-2.jpg',
     'Public/UI elements/Controls screen UI.jpg',
-    'Public/UI elements/Start Screen.jpg'
+    'Public/UI elements/Start_Screen.jpg'
 ];
 let assetsLoaded = false;
 let uiImagesLoaded = 0;
@@ -87,7 +87,7 @@ startScreen.style.alignItems = 'center';
 startScreen.style.fontFamily = "'Baloo 2', cursive, sans-serif";
 startScreen.style.zIndex = '200';
 const gameTitleImage = document.createElement('img');
-gameTitleImage.src = 'Public/UI elements/Start Screen.jpg';
+gameTitleImage.src = 'Public/UI elements/Start_Screen.jpg';
 gameTitleImage.alt = 'Game Title';
 gameTitleImage.style.width = '100vw';
 gameTitleImage.style.height = 'auto';
@@ -1548,7 +1548,7 @@ const bunnies = createBunnies();
 const sheep = spawnSheep();
 // Function to load and place the school hall
 function loadSchoolHall() {
-    const schoolHallUrl = "https://play.rosebud.ai/assets/School Hall.glb?hM2Z";
+    const schoolHallUrl = "Public/Models/2School_Hall.glb";
     gltfLoader.load(schoolHallUrl, (gltf) => {
         const model = gltf.scene;
         const initialScale = 150; // Upscaled to 150
